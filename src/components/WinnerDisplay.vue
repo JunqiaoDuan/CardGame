@@ -16,12 +16,7 @@ const emit = defineEmits(['playAgain'])
     <div class="fireworks"></div>
     <div class="winner-info">
       <h5>🎉 {{ winnerNickname }} Wins!</h5>
-      <button 
-        class="play-again-btn"
-        @click="emit('playAgain')"
-      >
-        Play Again
-      </button>
+      <button class="play-again-btn" @click="emit('playAgain')">Play Again</button>
     </div>
   </div>
 </template>
@@ -37,7 +32,7 @@ const emit = defineEmits(['playAgain'])
   background: rgba(255, 255, 255, 0.98);
   padding: 25px 35px;
   border-radius: 12px;
-  box-shadow: 
+  box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
@@ -93,7 +88,7 @@ h4 {
 
 .winning {
   background: linear-gradient(145deg, #ffd700, #ffc107);
-  box-shadow: 
+  box-shadow:
     0 0 20px rgba(255, 215, 0, 0.6),
     0 0 40px rgba(255, 215, 0, 0.3);
   border: 2px solid rgba(255, 215, 0, 0.5);
@@ -102,14 +97,16 @@ h4 {
 
 @keyframes glow {
   from {
-    box-shadow: 0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 15px #ffd700;
+    box-shadow:
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 15px #ffd700;
   }
   to {
-    box-shadow: 0 0 10px #fff,
-                0 0 20px #fff,
-                0 0 30px #ffd700;
+    box-shadow:
+      0 0 10px #fff,
+      0 0 20px #fff,
+      0 0 30px #ffd700;
   }
 }
-</style> 
+</style>

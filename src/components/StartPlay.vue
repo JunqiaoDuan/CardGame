@@ -1,20 +1,15 @@
 <template>
   <div class="game-center">
-    <button 
-      @click="emit('start')"
-      :disabled="disabled"
-      class="start-button"
-      v-if="!isGameStarted"
-    >
+    <button @click="emit('start')" :disabled="disabled" class="start-button" v-if="!isGameStarted">
       Start Game
     </button>
     <div class="deck-area">
       <div class="card-stack">
-        <div 
-          class="stacked-card" 
-          v-for="i in Math.min(5, remainingCards)" 
-          :key="i" 
-          :style="{ transform: `translateY(${(i-1) * -1}px)` }"
+        <div
+          class="stacked-card"
+          v-for="i in Math.min(5, remainingCards)"
+          :key="i"
+          :style="{ transform: `translateY(${(i - 1) * -1}px)` }"
           v-show="remainingCards > 0"
         >
           <div class="card-back">
@@ -31,15 +26,18 @@ export default { name: 'StartPlay' }
 </script>
 
 <script setup lang="ts">
-const props = withDefaults(defineProps<{
-  disabled?: boolean
-  isGameStarted?: boolean
-  remainingCards?: number
-}>(), {
-  remainingCards: 52,
-  isGameStarted: false,
-  disabled: false
-})
+const props = withDefaults(
+  defineProps<{
+    disabled?: boolean
+    isGameStarted?: boolean
+    remainingCards?: number
+  }>(),
+  {
+    remainingCards: 52,
+    isGameStarted: false,
+    disabled: false,
+  },
+)
 
 const emit = defineEmits<{
   (e: 'start'): void
@@ -62,7 +60,7 @@ const emit = defineEmits<{
   font-size: 16px;
   border-radius: 4px;
   border: none;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s;

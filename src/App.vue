@@ -5,8 +5,8 @@ import HomeView from './views/HomeView.vue'
 export default defineComponent({
   name: 'App',
   components: {
-    HomeView
-  }
+    HomeView,
+  },
 })
 </script>
 
@@ -16,5 +16,4 @@ export default defineComponent({
   </main>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

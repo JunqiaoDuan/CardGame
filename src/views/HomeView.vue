@@ -7,8 +7,8 @@ export default defineComponent({
   name: 'HomeView',
   components: {
     CardTable,
-    HomeHeader
-  }
+    HomeHeader,
+  },
 })
 </script>
 
@@ -18,4 +18,3 @@ export default defineComponent({
     <CardTable />
   </main>
 </template>
-

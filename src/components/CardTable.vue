@@ -12,10 +12,10 @@ interface Player {
 
 // Card interface
 interface Card {
-  value: string  // 2-10, J, Q, K, A
-  suit: string   // @, #, ^, *
-  isAnimating?: boolean  // Animation state flag
-  isWinning?: boolean   // Winning card flag
+  value: string // 2-10, J, Q, K, A
+  suit: string // @, #, ^, *
+  isAnimating?: boolean // Animation state flag
+  isWinning?: boolean // Winning card flag
 }
 
 interface WinnerInfo {
@@ -68,24 +68,26 @@ const players = ref<Player[]>(
 // Game state
 const isGameStarted = ref(false)
 const isDealing = ref(false)
-const showStartButton = ref(true)  // Control start button visibility
+const showStartButton = ref(true) // Control start button visibility
 const gameCards = ref<Card[]>([])
 
 // Initialize with 52 cards
 const remainingCards = ref(52)
 
 // Calculate player's score
-const calculatePlayerScore = (player: Player): { 
-  score: number,      // Maximum count of same value cards
-  value: string,      // Card value with maximum count
-  maxSuit: string     // Highest suit among cards with maximum count
+const calculatePlayerScore = (
+  player: Player,
+): {
+  score: number // Maximum count of same value cards
+  value: string // Card value with maximum count
+  maxSuit: string // Highest suit among cards with maximum count
 } => {
   const cardCount: Record<string, number> = {}
   const suitOrder = { '*': 4, '^': 3, '#': 2, '@': 1 }
-  const valueGroups: Record<string, string[]> = {}  // Store suits for each card value
+  const valueGroups: Record<string, string[]> = {} // Store suits for each card value
 
   // Count occurrences of each value and their suits
-  player.cards.forEach(card => {
+  player.cards.forEach((card) => {
     const key = card.value
     cardCount[key] = (cardCount[key] || 0) + 1
     if (!valueGroups[key]) valueGroups[key] = []
@@ -94,15 +96,17 @@ const calculatePlayerScore = (player: Player): {
 
   // Find values with highest count
   const maxCount = Math.max(...Object.values(cardCount))
-  const maxCards = Object.keys(cardCount).filter(key => cardCount[key] === maxCount)
+  const maxCards = Object.keys(cardCount).filter((key) => cardCount[key] === maxCount)
 
   // Find highest value among cards with same count
   const maxValue = maxCards.reduce((prev, curr) => (curr > prev ? curr : prev), '')
 
   // Find highest suit among cards with maxValue
   const suits = valueGroups[maxValue]
-  const maxSuit = suits.reduce((prev, curr) => 
-    suitOrder[curr as keyof typeof suitOrder] > suitOrder[prev as keyof typeof suitOrder] ? curr : prev
+  const maxSuit = suits.reduce((prev, curr) =>
+    suitOrder[curr as keyof typeof suitOrder] > suitOrder[prev as keyof typeof suitOrder]
+      ? curr
+      : prev,
   )
 
   return { score: maxCount, value: maxValue, maxSuit }
@@ -118,9 +122,11 @@ const determineWinner = () => {
   players.value.forEach((player, index) => {
     const { score, value, maxSuit } = calculatePlayerScore(player)
 
-    if (score > highestScore || 
-       (score === highestScore && value > highestValue) ||
-       (score === highestScore && value === highestValue && maxSuit > highestSuit)) {
+    if (
+      score > highestScore ||
+      (score === highestScore && value > highestValue) ||
+      (score === highestScore && value === highestValue && maxSuit > highestSuit)
+    ) {
       winnerIndex = index
       highestScore = score
       highestValue = value
@@ -129,7 +135,7 @@ const determineWinner = () => {
   })
 
   // Mark winning cards
-  players.value[winnerIndex].cards.forEach(card => {
+  players.value[winnerIndex].cards.forEach((card) => {
     if (card.value === highestValue) {
       card.isWinning = true
     }
@@ -138,9 +144,9 @@ const determineWinner = () => {
   winner.value = {
     index: winnerIndex,
     nickname: players.value[winnerIndex].nickname,
-    reason: '',  // Text explanation not needed
+    reason: '', // Text explanation not needed
     score: highestScore,
-    highestCard: { value: highestValue, suit: highestSuit }
+    highestCard: { value: highestValue, suit: highestSuit },
   }
 }
 
@@ -151,27 +157,26 @@ const handleGameStart = async () => {
 
   isGameStarted.value = true
   isDealing.value = true
-  showStartButton.value = true  // Keep start button visible
-  
+  showStartButton.value = true // Keep start button visible
+
   try {
     // 1. Generate and shuffle new cards
     gameCards.value = shuffleCards(generateCards())
     console.log('Shuffling completed', gameCards.value)
-    
+
     // 2. Deal cards
     await dealCards()
     console.log('Dealing completed', players.value)
 
     // 3. Calculate winner
     determineWinner()
-    
+
     // Hide start button after dealing is complete
     showStartButton.value = false
-
   } catch (error) {
     console.log('Error during game start:', error)
     isGameStarted.value = false // Reset game state on error
-    showStartButton.value = true  // Show start button on error
+    showStartButton.value = true // Show start button on error
   } finally {
     isDealing.value = false
   }
@@ -180,44 +185,53 @@ const handleGameStart = async () => {
 // Card sorting function
 const sortCards = (cards: Card[]): Card[] => {
   const cardOrder = {
-    'A': 14, 'K': 13, 'Q': 12, 'J': 11,
-    '10': 10, '9': 9, '8': 8, '7': 7,
-    '6': 6, '5': 5, '4': 4, '3': 3, '2': 2
+    A: 14,
+    K: 13,
+    Q: 12,
+    J: 11,
+    '10': 10,
+    '9': 9,
+    '8': 8,
+    '7': 7,
+    '6': 6,
+    '5': 5,
+    '4': 4,
+    '3': 3,
+    '2': 2,
   }
   const suitOrder = { '*': 4, '^': 3, '#': 2, '@': 1 }
 
   return [...cards].sort((a, b) => {
     // Sort by value first
-    const valueCompare = cardOrder[a.value as keyof typeof cardOrder] - 
-                        cardOrder[b.value as keyof typeof cardOrder]
+    const valueCompare =
+      cardOrder[a.value as keyof typeof cardOrder] - cardOrder[b.value as keyof typeof cardOrder]
     if (valueCompare !== 0) return valueCompare
 
     // Then sort by suit if values are equal
-    return suitOrder[a.suit as keyof typeof suitOrder] - 
-           suitOrder[b.suit as keyof typeof suitOrder]
+    return suitOrder[a.suit as keyof typeof suitOrder] - suitOrder[b.suit as keyof typeof suitOrder]
   })
 }
 
 // Deal cards function
 const dealCards = async () => {
   // Clear all players' hands
-  players.value.forEach(player => player.cards = [])
-  
+  players.value.forEach((player) => (player.cards = []))
+
   // Deal cards in turns (13 cards each)
   for (let i = 0; i < 52; i++) {
     const playerIndex = i % 4
-    
+
     // Add card with animation
     const card = {
       ...gameCards.value[i],
-      isAnimating: true
+      isAnimating: true,
     }
-    
+
     players.value[playerIndex].cards.push(card)
-    
+
     // Wait for animation
-    await new Promise(resolve => setTimeout(resolve, 60))
-    
+    await new Promise((resolve) => setTimeout(resolve, 60))
+
     // Remove animation flag
     const lastCardIndex = players.value[playerIndex].cards.length - 1
     if (players.value[playerIndex].cards[lastCardIndex]) {
@@ -239,20 +253,20 @@ const resetGame = () => {
   isDealing.value = false
   remainingCards.value = 52
   winner.value = null
-  showStartButton.value = false  // Hide start button
-  
+  showStartButton.value = false // Hide start button
+
   // Clear all players' cards and winning marks
-  players.value.forEach(player => {
+  players.value.forEach((player) => {
     player.cards = []
   })
-  
+
   // Generate and shuffle new cards
   gameCards.value = []
 
   // Auto start new game after short delay
   setTimeout(() => {
     handleGameStart()
-  }, 500)  // 500ms delay to show reset state
+  }, 500) // 500ms delay to show reset state
 }
 </script>
 
@@ -276,9 +290,9 @@ const resetGame = () => {
         :is-winner="winner?.index === 1"
       />
       <div class="table-center">
-        <StartPlay 
+        <StartPlay
           v-if="showStartButton"
-          @start="handleGameStart" 
+          @start="handleGameStart"
           :disabled="isDealing"
           :is-game-started="isGameStarted"
           :remaining-cards="remainingCards"

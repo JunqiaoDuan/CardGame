@@ -50,7 +50,8 @@ defineProps<Props>()
   transform: rotateY(0deg);
 }
 
-.card-front, .card-back {
+.card-front,
+.card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -100,4 +101,4 @@ defineProps<Props>()
     #2c3e50 20px
   );
 }
-</style> 
+</style>
