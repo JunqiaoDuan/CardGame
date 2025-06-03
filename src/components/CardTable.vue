@@ -55,13 +55,15 @@ const shuffleCards = (cards: Card[]): Card[] => {
 // Generate and shuffle cards
 const cards = shuffleCards(generateCards())
 
-const getRandomString = () => Math.random().toString(36).substring(7)
+const getRandomInt = () => Math.floor(Math.random() * 20) + 1
 
-const players = ref<Player[]>(Array.from({ length: 4 }, (_, index) => ({
-  nickname: `Player ${index + 1}`,
-  avatar: `https://api.multiavatar.com/${getRandomString()}.svg`,
-  cards: []
-})))
+const players = ref<Player[]>(
+  Array.from({ length: 4 }, (_, index) => ({
+    nickname: `Player ${index + 1}`,
+    avatar: `https://picsum.photos/id/${(index + 1) * getRandomInt()}/200/300`,
+    cards: [],
+  })),
+)
 
 // Game state
 const isGameStarted = ref(false)
