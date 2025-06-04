@@ -30,6 +30,7 @@ npm install gh-pages --save-dev
 
 ```sh
 
+npm run build
 npm run deploy
 
 ```
