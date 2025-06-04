@@ -2,6 +2,8 @@
 
 A fun card game web app, created by AI using Vue in four hours.
 
+[View Live](https://junqiaoduan.github.io/CardGame/)
+
 ## Project Debug
 
 ### Install dependent libraries
