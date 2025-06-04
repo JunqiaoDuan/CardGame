@@ -28,8 +28,4 @@ npm install gh-pages --save-dev
 
 ### Run
 
-```sh
-
-npm run deploy
-
-```
+Configure GitHub Pages in your repository settings (Settings > Pages). The site will be automatically deployed when you push changes to the main branch.

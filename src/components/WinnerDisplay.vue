@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DiceAnimation from './DiceAnimation.vue'
 
 interface Props {
   winnerNickname: string
